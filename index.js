@@ -9,6 +9,11 @@ app.get('/api/courses',(req,res)=>{
     res.send([1, 2, 3]);
 });
 
+app.get('/api/posts/:year/:month',(req,res)=>{
+    //const id = req.params.id;
+    res.send( req.params);
+});
+
 //PORT
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
