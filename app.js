@@ -1,15 +1,17 @@
-const fs = require('fs');
+const EventEmitter = require('events');
 
-const files = fs.readdirSync('./');
-console.log(files);
 
-fs.readdir('./',function(err,filesAsync){
-    if(err)
-    {
-        console.log(`Error : ${err}`);
-    }
-    else
-    {
-        console.log(`Result : ${filesAsync}`);
-    }
+
+//Making a noise, producing a signal that an event has occured.
+//Raise an event
+//emitter.emit('messageLogged',{id: 1,url: 'https://www.google.com'});
+
+const Logger = require('./logger');
+const logger = new Logger();
+
+//Register a listener
+logger.on('messageLogged',function(arg){//e, eventArg
+    console.log("Listener Called",arg);
 });
+
+logger.log('message');
