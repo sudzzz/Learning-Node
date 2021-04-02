@@ -1,8 +1,16 @@
-var _ = require('underscore');
+const express = require("express");
+const app = express();
 
-//Core Module
-//Files and folders
-//node_modules
+app.get('/',(req,res)=>{
+    res.send("Hello World");
+});
 
-var result = _.contains([1,2,3],2);
-console.log(result);
+app.get('/api/courses',(req,res)=>{
+    res.send([1, 2, 3]);
+});
+
+//PORT
+const port = process.env.PORT || 3000;
+app.listen(port,()=>{
+    console.log(`Server is running on port ${port}`);
+});
