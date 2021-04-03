@@ -3,6 +3,8 @@ const express = require("express");
 const helmet = require('helmet');
 const morgan = require('morgan');
 const config = require('config');
+const debug = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 const logger = require('./logger');
 const authenticate = require('./authentication');
 const app = express();
@@ -45,7 +47,7 @@ app.use(helmet());
 //If it is in development enviorment then we are logging every request in console
 if(app.get('env') === 'development'){
     app.use(morgan('tiny'));
-    console.log("Morgan enabled...");
+    debug("Morgan enabled...");
 }
 
 
@@ -54,6 +56,8 @@ console.log("Application Name : "+config.get('name'));
 console.log("Mail Sever : "+config.get('mail.host'));
 console.log("Mail Sever Password: "+config.get('mail.password'));
 
+//Db work
+//dbDebugger("Connected to Database...");
 
 const courses = [
     {
