@@ -6,6 +6,10 @@ const logger = require('./logger');
 const authenticate = require('./authentication');
 const app = express();
 
+console.log(`NODE_ENV : ${process.env.NODE_ENV}`);
+//If process.env.NODE_ENV is undefined the by default app.get('env') returns development.
+console.log(`app : ${app.get('env')}`);
+
 /*Built-In Middleware*/
 
 //This method returns a middleware function. It's job is to read the request
@@ -36,7 +40,13 @@ app.use(helmet());
 
 //"morgan" is a HTTP request logger middleware for node.js
 //It logs every request made in the console
-app.use(morgan('tiny'));
+//Here we are checking the envoirment of node appilcation
+//If it is in development enviorment then we are logging every request in console
+if(app.get('env') === 'development'){
+    app.use(morgan('tiny'));
+    console.log("Morgan enabled...");
+}
+
 
 const courses = [
     {
