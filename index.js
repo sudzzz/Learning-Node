@@ -4,11 +4,23 @@ const logger = require('./logger');
 const authenticate = require('./authentication');
 const app = express();
 
+/*Built-In Middleware*/
+
 //This method returns a middleware function. It's job is to read the request
 //and if there is a json object in the body of the request, the it will parse
 //it to json object and will set "req.body" property.
 app.use(express.json());
 
+//Parses the body with key-value pair and populates "req.body" like a json object.
+//With extended:true we can pass arrays and complex objects uring url-encoded format.
+app.use(express.urlencoded({ extended: true }));   //key=value&key=value
+
+//Public is the name of the folder. In this folder we put all our static assets
+//like css, images etc inside this folder.
+app.use(express.static('public'));
+
+
+/*Custom-Middleware*/
 
 //Custom Middleware - next() is used to pass control to next middlewae function in pipeline.
 //Whenever we create custom middleware, keep it in seperate files/modules for clean coding practices.
