@@ -1,5 +1,7 @@
 const Joi = require('joi');
 const express = require("express");
+const helmet = require('helmet');
+const morgan = require('morgan');
 const logger = require('./logger');
 const authenticate = require('./authentication');
 const app = express();
@@ -28,7 +30,13 @@ app.use(logger);
 
 app.use(authenticate);
 
+/*Third-Party Middleware*/
 
+app.use(helmet());
+
+//"morgan" is a HTTP request logger middleware for node.js
+//It logs every request made in the console
+app.use(morgan('tiny'));
 
 const courses = [
     {
