@@ -9,6 +9,9 @@ const logger = require('./logger');
 const authenticate = require('./authentication');
 const app = express();
 
+app.set('view engine','pug');
+app.set('views','./views'); //default
+
 console.log(`NODE_ENV : ${process.env.NODE_ENV}`);
 //If process.env.NODE_ENV is undefined the by default app.get('env') returns development.
 console.log(`app : ${app.get('env')}`);
@@ -75,7 +78,7 @@ const courses = [
 ]
 
 app.get('/',(req,res)=>{
-    res.send("Hello World");
+    res.render('index',{ title : "My Express App", message : "Hello"});
 });
 
 app.get('/api/courses',(req,res)=>{
