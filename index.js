@@ -2,6 +2,7 @@ const Joi = require('joi');
 const express = require("express");
 const helmet = require('helmet');
 const morgan = require('morgan');
+const config = require('config');
 const logger = require('./logger');
 const authenticate = require('./authentication');
 const app = express();
@@ -46,6 +47,12 @@ if(app.get('env') === 'development'){
     app.use(morgan('tiny'));
     console.log("Morgan enabled...");
 }
+
+
+/*Configuration*/
+console.log("Application Name : "+config.get('name'));
+console.log("Mail Sever : "+config.get('mail.host'));
+console.log("Mail Sever Password: "+config.get('mail.password'));
 
 
 const courses = [
