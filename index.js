@@ -1,40 +1,55 @@
 //Asynchronus Code
-
 console.log("Before");
-getUser(1,getRepositories);
+/*getUser(1, (user) => {
+    getRepositories(user.gitHubUsername, (repos) => {
+      getCommits(repos[0], (commits) => {
+        console.log(commits);
+      });
+    });
+});*/
+
+
+/*getUser(1).then(
+    user => getRepositories(user.gitHubUsername).then(
+        repos => getCommits(repos[0]).then(
+            commits => console.log("Commits",commits)
+        )
+    )
+);*/
+
+getUser(1)
+  .then(user => getRepositories(user.gitHubUsername))
+  .then(repos => getCommits(repos[0]))
+  .then(commits => console.log("Commits",commits))
+  .catch(err => console.log("Error",err.message));
+
+
 console.log('After');
 
-function getRepositories(user){
-    const name = user.gitHubUsername;
-    getRepositories(name,getCommits);
+
+function getUser(id){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            console.log("Reading a user form database...");
+            resolve({id : id, gitHubUsername : "sudzzz"});
+        },2000);
+    }); 
 }
 
-function getCommits(repos){
-    const repo = repos[0];
-    getCommits(repo,displayCommits);
+function getRepositories(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            console.log("Fetching repositories from github...")
+            resolve(['repo1','repo2','repo3']);
+        },2000);
+    });
 }
 
-function displayCommits(commits){
-    console.log(commits);
-}
-
-function getUser(id,callback){
-    setTimeout(()=>{
-        console.log("Reading a user form database...");
-        callback({id : id, gitHubUsername : "sudzzz"});
-    },2000);
-}
-
-function getRepositories(username,callback){
-    setTimeout(()=>{
-        console.log("Fetching repositories from github...")
-        callback(['repo1','repo2','repo3']);
-    },2000);
-}
-
-function getCommits(repo,callback){
-    setTimeout(()=>{
-        console.log("Fetching commits from github repositorty...")
-        callback(['commit1','commit2','commit3']);
-    },2000);
+function getCommits(repo){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            console.log("Fetching commits from github repositorty...")
+            resolve(['commit1','commit2','commit3']);
+        },2000);
+    });  
 }
