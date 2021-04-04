@@ -138,4 +138,12 @@ async function updateCourse(id){
 },{new: true});
 console.log(res);
 }
-updateCourse('6069abc0a2912d625034e1a2');
+//updateCourse('6069abc0a2912d625034e1a2');
+
+async function deleteCourse(id){
+   const result = await Course.deleteOne({_id : id});
+   console.log(result);
+
+   //Similarly we can have Course.findByIdAndRemove()
+}
+deleteCourse('6069abc0a2912d625034e1a2');
