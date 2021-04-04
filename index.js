@@ -72,9 +72,13 @@ async function getCourses(){
         // syntax for representing regular expression -> "/pattern/"
         // represents strings that starts with  Mosh = "/^Mosh/"
         .find({author : /^Mosh/})
+
         // represents strings that ends with Hamedani = "/Hamedani$/"
         //If we append "i at the end then it becomes case sensitive"
         .find({author : /Hamedani$/i})
+
+        // represents strings that contains the word Mosh = "/.*Mosh.*/"
+        .find({author : /.*Mosh.*/})
         .limit(10)
         .sort({name : 1}) //Sorts name => 1 = ascending, -1 = descending
         .select({name : 1, tags : 1}) // selects the feild to display. 1=display,0=don't display
@@ -85,4 +89,53 @@ async function getCourses(){
     console.log(course1);
     console.log(course2);
 }
-getCourses();
+//getCourses();
+
+
+async function updateCourse(id){
+    /*
+    Approch - Query First
+    1. findById()
+    2. Modify Properties
+    3. save() 
+    */
+   const course = await Course.findById(id);
+   if(!course) return;
+   //course.isPublished = true;
+   //course.author = "Sudhir Daga"
+
+   //OR
+
+   /*course.set({
+       isPublished : true,
+       author : "Sudhir Daga"
+   });
+
+   const result = await course.save();
+   console.log(result);*/
+
+    /*
+    Approach - Update First
+    Update Directly
+    Get the updated document(optional)
+    */
+   //Only updates the document
+   
+   /*const res = await Course.update({_id: id},{
+       $set:{
+        author : "Mosh",
+        isPublished : "false"
+       }
+   });
+   console.log(res);*/
+
+   //Updates And Returns the document
+   const res = await Course.findByIdAndUpdate({_id: id},{
+    $set:{
+     author : "Mosh",
+     isPublished : true
+    }
+},{new: true});
+console.log(res);
+}
+updateCourse('6069abc0a2912d625034e1a2');
