@@ -5,11 +5,27 @@ mongoose.connect('mongodb://localhost/playground')
   .catch(err => console.error("Could not connect to MongoDb...",err));
 
 const courseSchema = new mongoose.Schema({
-    name : String,
+    name : {type : String, required : true,minlength : 5},
     author : String,
-    tags : [ String ],
+    tags : {
+        type : Array,
+        //Custom Validator
+        validate : {
+            validator: function(v){
+                return v && v.length > 0; 
+            },
+            message : "A course should have atleast one tag."
+        }
+    },
     date : { type: Date, default : Date.now},
-    isPublished : Boolean
+    isPublished : Boolean,
+    price : {
+        type : Number,
+        //arrow function i.e. "=>" is not valid as "this" keyword is not present.
+        required : function(){return this.isPublished;},//If isPublished is true then price field is required.
+        min : 10,
+        max : 200
+    }
 });
 
 const Course = mongoose.model('Course',courseSchema);
@@ -20,13 +36,19 @@ async function createCourse(){
         name : "Angular Course",
         author : "Mosh",
         tags : ['angular','frontend'],
-        isPublished : true
+        isPublished : true,
+        price : 15
     });
+    try{
+        const result = await course.save();
+        console.log(result);
+    }
+    catch(ex){
+        console.log(ex.message);
+    }
     
-    const result = await course.save();
-    console.log(result);
 }
-//createCourse();
+createCourse();
 
 
 //READ
@@ -146,4 +168,4 @@ async function deleteCourse(id){
 
    //Similarly we can have Course.findByIdAndRemove()
 }
-deleteCourse('6069abc0a2912d625034e1a2');
+//deleteCourse('6069abc0a2912d625034e1a2');
